@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 
 const { MongoClient } = require('mongodb');
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 7000;
 const cors = require('cors');
 require('dotenv').config();
 app.use(cors());
@@ -14,11 +14,20 @@ async function run() {
         await client.connect();
         console.log('database connected successfully');
         const database = client.db('royal_motors');
+        // const servicesCollection = client.db("royalMotors").collection("services");
         const carCollection = database.collection('car');
 
-        app.post('/car', async (req, res) => {
-
-        })
+        const reviewCollection = database.collection('reviews');
+        app.post('/addServices', async (req, res) => {
+            const carDetails = req.body;
+            const result = await carCollection.insertOne(carDetails);
+            res.json(result)
+        });
+        // get all services
+        app.get("/allServices", async (req, res) => {
+            const result = await carCollection.find({}).toArray();
+            res.send(result);
+        });
     }
     finally {
         // await client.close();
