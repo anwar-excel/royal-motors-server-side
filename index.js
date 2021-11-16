@@ -70,6 +70,11 @@ async function run() {
             res.send(result);
             console.log(result);
         });
+        // review
+        app.post("/addSReview", async (req, res) => {
+            const result = await reviewCollection.insertOne(req.body);
+            res.send(result);
+        });
 
     }
     finally {
