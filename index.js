@@ -17,8 +17,8 @@ async function run() {
         const database = client.db('royal_motors');
         // const servicesCollection = client.db("royalMotors").collection("services");
         const carCollection = database.collection('car');
-        const ordersCollection = client.db("royal_motors").collection("orders");
-        const usersCollection = client.db("royal_motors").collection("users");
+        const ordersCollection = database.collection("orders");
+        const usersCollection = database.collection("users");
 
         const reviewCollection = database.collection('reviews');
         //user collection
@@ -26,9 +26,19 @@ async function run() {
         app.post('/users', async (req, res) => {
             const user = req.body;
             const result = await usersCollection.insertOne(user);
-            console.log(result);
             res.json(result);
         });
+        app.put('/users/:email', async (req, res) => {
+            const email = req.params.email;
+            const user = await usersCollection.findOneAndUpdate({ email: email }, {
+                $set: {
+                    role: "admin",
+                }
+            })
+            console.log(user);
+            res.json(user);
+        });
+
         app.post('/addServices', async (req, res) => {
             const carDetails = req.body;
             const result = await carCollection.insertOne(carDetails);
