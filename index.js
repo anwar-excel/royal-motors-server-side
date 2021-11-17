@@ -28,7 +28,7 @@ async function run() {
             const result = await usersCollection.insertOne(user);
             res.json(result);
         });
-        app.put('/users/:email', async (req, res) => {
+        app.put('/users/admin', async (req, res) => {
             const email = req.params.email;
             const user = await usersCollection.findOneAndUpdate({ email: email }, {
                 $set: {
