@@ -19,6 +19,7 @@ async function run() {
         const carCollection = database.collection('car');
         const ordersCollection = database.collection("orders");
         const usersCollection = database.collection("users");
+        const staffCollection = database.collection("staff");
 
         const reviewCollection = database.collection('reviews');
         //user collection
@@ -52,6 +53,17 @@ async function run() {
             const carDetails = req.body;
             const result = await carCollection.insertOne(carDetails);
             res.json(result)
+        });
+        //addstaff 
+        app.post('/addstaff', async (req, res) => {
+            const staffDetails = req.body;
+            const result = await staffCollection.insertOne(staffDetails);
+            res.json(result)
+        });
+        // get all staff
+        app.get("/allstaff", async (req, res) => {
+            const result = await staffCollection.find({}).toArray();
+            res.send(result);
         });
         // get all services
         app.get("/allServices", async (req, res) => {
