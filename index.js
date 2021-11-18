@@ -28,15 +28,24 @@ async function run() {
             const result = await usersCollection.insertOne(user);
             res.json(result);
         });
-        app.put('/users/admin', async (req, res) => {
-            const email = req.params.email;
-            const user = await usersCollection.findOneAndUpdate({ email: email }, {
-                $set: {
-                    role: "admin",
-                }
-            })
-            console.log(user);
-            res.json(user);
+        // app.put('/users/admin', async (req, res) => {
+        //     const email = req.params.email;
+        //     const user = await usersCollection.findOneAndUpdate({ email: email }, {
+        //         $set: {
+        //             role: "admin",
+        //         }
+        //     })
+        //     console.log(user);
+        //     res.json(user);
+        // });
+        app.put("/users/admin", async (req, res) => {
+            const user = req.body;
+            console.log(user, "put");
+            const filter = { email: user.email };
+            const updateDoc = { $set: { role: "admin" } };
+            const result = await usersCollection.updateOne(filter, updateDoc);
+            console.log(result);
+            res.json(result);
         });
 
         app.post('/addServices', async (req, res) => {
